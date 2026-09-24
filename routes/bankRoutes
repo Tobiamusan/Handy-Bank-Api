@@ -1,0 +1,25 @@
+const express = require("express");
+
+const router = express.Router();
+
+const {
+getAccountNumber,
+getAllUsers,
+blockUser,
+getUserCount
+} = require("../controllers/bankController");
+
+const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
+
+router.post("/account-number", getAccountNumber);
+
+router.get("/users", authMiddleware, adminMiddleware, getAllUsers);
+
+//ADMIN BLOCKS
+router.patch("/users/:userId/block", authMiddleware, adminMiddleware, blockUser);
+
+//Admin total number of registered users
+router.get("/users/count", authMiddleware, adminMiddleware, getUserCount);
+
+module.exports = router;
